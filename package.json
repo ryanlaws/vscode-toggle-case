@@ -8,10 +8,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/wmaurer/vscode-change-case.git"
+        "url": "https://github.com/ryanlaws/vscode-toggle-case.git"
     },
     "bugs": {
-        "url": "https://github.com/wmaurer/vscode-change-case/issues"
+        "url": "https://github.com/ryanlaws/vscode-toggle-case/issues"
     },
     "license": "MIT",
     "version": "1.0.1",
