@@ -1,5 +1,7 @@
 # Toggle Case Extension for Visual Studio Code
 
+Fork of wmaurer's [change-case](https://marketplace.visualstudio.com/itemdetails?itemName=wmaurer.change-case).
+
 A wrapper around [node-change-case](https://github.com/blakeembrey/node-change-case) for Visual Studio Code
 with some extra goodies. Quickly change the case of the current selection or current word, toggle between
 two configured case settings, or copy the toggled case to the clipboard. 
