@@ -76,7 +76,7 @@
            y="963.93274"
            x="63.891663"
            id="tspan4138"
-           sodipodi:role="line">changeCase</tspan></text>
+           sodipodi:role="line">toggleCase</tspan></text>
       <text
          sodipodi:linespacing="125%"
          id="text4136-6"
@@ -87,7 +87,7 @@
            y="992.98804"
            x="64.019836"
            id="tspan4138-8"
-           sodipodi:role="line">CHANGE_CASE</tspan></text>
+           sodipodi:role="line">TOGGLE_CASE</tspan></text>
       <text
          sodipodi:linespacing="125%"
          id="text4136-3"
@@ -98,7 +98,7 @@
            y="1021.9878"
            x="63.891663"
            id="tspan4138-4"
-           sodipodi:role="line">change-case</tspan></text>
+           sodipodi:role="line">toggle-case</tspan></text>
     </g>
   </g>
 </svg>

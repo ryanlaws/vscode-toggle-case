@@ -1,145 +1,165 @@
 {
-  "name": "change-case",
-  "description": "Quickly change the case (camelCase, CONSTANT_CASE, snake_case, etc) of the current selection or current word",
-  "icon": "images/change-case-icon.png",
-  "galleryBanner": {
-    "color": "#1e1e1e",
-    "theme": "dark"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wmaurer/vscode-change-case.git"
-  },
-  "bugs": {
-    "url": "https://github.com/wmaurer/vscode-change-case/issues"
-  },
-  "license": "MIT",
-  "version": "1.0.0",
-  "publisher": "wmaurer",
-  "engines": {
-    "vscode": "^1.6.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:extension.changeCase.commands",
-    "onCommand:extension.changeCase.camel",
-    "onCommand:extension.changeCase.constant",
-    "onCommand:extension.changeCase.dot",
-    "onCommand:extension.changeCase.kebab",
-    "onCommand:extension.changeCase.lower",
-    "onCommand:extension.changeCase.lowerFirst",
-    "onCommand:extension.changeCase.no",
-    "onCommand:extension.changeCase.param",
-    "onCommand:extension.changeCase.pascal",
-    "onCommand:extension.changeCase.path",
-    "onCommand:extension.changeCase.sentence",
-    "onCommand:extension.changeCase.snake",
-    "onCommand:extension.changeCase.swap",
-    "onCommand:extension.changeCase.title",
-    "onCommand:extension.changeCase.upper",
-    "onCommand:extension.changeCase.upperFirst"
-  ],
-  "main": "./out/src/extension",
-  "contributes": {
-    "commands": [
-      {
-        "command": "extension.changeCase.commands",
-        "title": "Change Case Commands"
-      },
-      {
-        "command": "extension.changeCase.camel",
-        "title": "Change Case camel"
-      },
-      {
-        "command": "extension.changeCase.constant",
-        "title": "Change Case constant"
-      },
-      {
-        "command": "extension.changeCase.dot",
-        "title": "Change Case dot"
-      },
-      {
-        "command": "extension.changeCase.kebab",
-        "title": "Change Case kebab"
-      },
-      {
-        "command": "extension.changeCase.lower",
-        "title": "Change Case lower"
-      },
-      {
-        "command": "extension.changeCase.lowerFirst",
-        "title": "Change Case lowerFirst"
-      },
-      {
-        "command": "extension.changeCase.no",
-        "title": "Change Case no"
-      },
-      {
-        "command": "extension.changeCase.param",
-        "title": "Change Case param"
-      },
-      {
-        "command": "extension.changeCase.pascal",
-        "title": "Change Case pascal"
-      },
-      {
-        "command": "extension.changeCase.path",
-        "title": "Change Case path"
-      },
-      {
-        "command": "extension.changeCase.sentence",
-        "title": "Change Case sentence"
-      },
-      {
-        "command": "extension.changeCase.snake",
-        "title": "Change Case snake"
-      },
-      {
-        "command": "extension.changeCase.swap",
-        "title": "Change Case swap"
-      },
-      {
-        "command": "extension.changeCase.title",
-        "title": "Change Case title"
-      },
-      {
-        "command": "extension.changeCase.upper",
-        "title": "Change Case upper"
-      },
-      {
-        "command": "extension.changeCase.upperFirst",
-        "title": "Change Case upperFirst"
-      }
-    ]
-  },
-  "configuration": {
-    "type": "object",
-    "title": "changeCase configuration",
-    "properties": {
-      "changeCase.includeDotInCurrentWord": {
-        "type": "boolean",
-        "default": "false",
-        "description": "When selecting current word, allow dots in current word (false by default)"
-      }
+    "name": "toggle-case",
+    "description": "Quickly change, toggle, or copy the case (camelCase, CONSTANT_CASE, snake_case, etc) of the current selection or current word",
+    "icon": "images/change-case-icon.png",
+    "galleryBanner": {
+        "color": "#1e1e1e",
+        "theme": "dark"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wmaurer/vscode-change-case.git"
+    },
+    "bugs": {
+        "url": "https://github.com/wmaurer/vscode-change-case/issues"
+    },
+    "license": "MIT",
+    "version": "1.0.0",
+    "publisher": "ryanlaws",
+    "engines": {
+        "vscode": "^1.6.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.toggleCase.commands",
+        "onCommand:extension.toggleCase.camel",
+        "onCommand:extension.toggleCase.constant",
+        "onCommand:extension.toggleCase.dot",
+        "onCommand:extension.toggleCase.kebab",
+        "onCommand:extension.toggleCase.lower",
+        "onCommand:extension.toggleCase.lowerFirst",
+        "onCommand:extension.toggleCase.no",
+        "onCommand:extension.toggleCase.param",
+        "onCommand:extension.toggleCase.pascal",
+        "onCommand:extension.toggleCase.path",
+        "onCommand:extension.toggleCase.sentence",
+        "onCommand:extension.toggleCase.snake",
+        "onCommand:extension.toggleCase.swap",
+        "onCommand:extension.toggleCase.title",
+        "onCommand:extension.toggleCase.upper",
+        "onCommand:extension.toggleCase.upperFirst",
+        "onCommand:extension.toggleCase.toggleCase",
+        "onCommand:extension.toggleCase.copyToggled"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.toggleCase.commands",
+                "title": "Change Case Commands"
+            },
+            {
+                "command": "extension.toggleCase.camel",
+                "title": "Change Case camel"
+            },
+            {
+                "command": "extension.toggleCase.constant",
+                "title": "Change Case constant"
+            },
+            {
+                "command": "extension.toggleCase.dot",
+                "title": "Change Case dot"
+            },
+            {
+                "command": "extension.toggleCase.kebab",
+                "title": "Change Case kebab"
+            },
+            {
+                "command": "extension.toggleCase.lower",
+                "title": "Change Case lower"
+            },
+            {
+                "command": "extension.toggleCase.lowerFirst",
+                "title": "Change Case lowerFirst"
+            },
+            {
+                "command": "extension.toggleCase.no",
+                "title": "Change Case no"
+            },
+            {
+                "command": "extension.toggleCase.param",
+                "title": "Change Case param"
+            },
+            {
+                "command": "extension.toggleCase.pascal",
+                "title": "Change Case pascal"
+            },
+            {
+                "command": "extension.toggleCase.path",
+                "title": "Change Case path"
+            },
+            {
+                "command": "extension.toggleCase.sentence",
+                "title": "Change Case sentence"
+            },
+            {
+                "command": "extension.toggleCase.snake",
+                "title": "Change Case snake"
+            },
+            {
+                "command": "extension.toggleCase.swap",
+                "title": "Change Case swap"
+            },
+            {
+                "command": "extension.toggleCase.title",
+                "title": "Change Case title"
+            },
+            {
+                "command": "extension.toggleCase.upper",
+                "title": "Change Case upper"
+            },
+            {
+                "command": "extension.toggleCase.upperFirst",
+                "title": "Change Case upperFirst"
+            },
+            {
+                "command": "extension.toggleCase.toggleCase",
+                "title": "Toggle Case between configured cases"
+            },
+            {
+                "command": "extension.toggleCase.copyToggled",
+                "title": "Copy with Case Toggled between configured cases"
+            }
+        ]
+    },
+    "configuration": {
+        "type": "object",
+        "title": "toggleCase configuration",
+        "properties": {
+            "toggleCase.includeDotInCurrentWord": {
+                "type": "boolean",
+                "default": "false",
+                "description": "When selecting current word, allow dots in current word (false by default)"
+            },
+            "toggleCase.case1": {
+                "type": "string",
+                "default": "kebab",
+                "description": "First case to toggle to/from (from/to second)"
+            },
+            "toggleCase.case2": {
+                "type": "string",
+                "default": "camel",
+                "description": "Second case to toggle to/from (from/to first)"
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.32",
+        "@types/node": "^6.0.46",
+        "mocha": "^2.3.3",
+        "typescript": "^2.0.6",
+        "vscode": "1.1.33"
+    },
+    "dependencies": {
+        "change-case": "^3.0.0",
+        "lodash.range": "^3.1.1",
+        "lodash.uniq": "^4.1.0"
     }
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install"
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.46",
-    "mocha": "^2.3.3",
-    "typescript": "^2.0.6",
-    "vscode": "^1.0.3"
-  },
-  "dependencies": {
-    "change-case": "^3.0.0",
-    "lodash.range": "^3.1.1",
-    "lodash.uniq": "^4.1.0"
-  }
 }

@@ -1,6 +1,7 @@
 The MIT License (MIT)
 
 Copyright (c) 2015 Wayne Maurer
+Derivations (c) 2019 Ryan Laws
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software AND associated documentation files (the "Software"), to deal

@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { EOL } from 'os';
 import * as changeCase from 'change-case';
 const lodashUniq = require('lodash.uniq');
-const lodashRange = require('lodash.range');
 
 export const COMMAND_LABELS = {
     camel: 'camel',
@@ -20,10 +19,67 @@ export const COMMAND_LABELS = {
     swap: 'swap',
     title: 'title',
     upper: 'upper',
-    upperFirst: 'upperFirst'
+    upperFirst: 'upperFirst',
+    toggleCase: 'toggleCase',
+    copyToggled: 'copyToggled'
 };
 
-const COMMAND_DEFINITIONS = [
+const notifyOrThrow = (message: string, doThrow = false): void => {
+    if (doThrow) {
+        throw new Error(message);
+    } else {
+        vscode.window.setStatusBarMessage(`ToggleCase : ${message}`, 5000);
+    }
+}
+
+const toggleCase = (input: string, throwWhenInvalid = false): string | undefined => {
+    const { case1, case2 } = vscode.workspace.getConfiguration('togglecase') || { case1: '', case2: '' }
+    const notify = (message) => notifyOrThrow(message, throwWhenInvalid)
+
+    let method;
+
+    if (!isValidCase(case1) || !isValidCase(case2)) {
+        notify("One or both of the cases are invalid or not configured.")
+        return input;
+    }
+
+    if (input === changeCase[case1](input)) {
+        method = case2
+    } else if (input === changeCase[case2](input)) {
+        method = case1
+    } else {
+        notify("Selection(s) don't match either configured case.");
+    }
+
+    const output = changeCase[method](input);
+    if (input === output) {
+        notify("Toggling case had no effect.");
+    }
+    return output;
+}
+
+export async function copyToggled(): Promise<void> {
+    let input;
+    try {
+        input = getSelectedTextIfOnlyOneSelection();
+        if (input === undefined) {
+            throw new Error(`Not one selection`);
+        }
+    }
+    catch (e) {
+        notifyOrThrow(`Only one selection can be copied at a time`)
+        return;
+    }
+
+    try {
+        const output = toggleCase(input, true);
+        await vscode.env.clipboard.writeText(output);
+    } catch (e) {
+        notifyOrThrow(`Error copying selection to clipboard : ${e.message}`)
+    }
+}
+
+const TRANSFORM_COMMAND_DEFS = [
     { label: COMMAND_LABELS.camel, description: 'Convert to a string with the separators denoted by having the next letter capitalised', func: changeCase.camel },
     { label: COMMAND_LABELS.constant, description: 'Convert to an upper case, underscore separated string', func: changeCase.constant },
     { label: COMMAND_LABELS.dot, description: 'Convert to a lower case, period separated string', func: changeCase.dot },
@@ -39,26 +95,34 @@ const COMMAND_DEFINITIONS = [
     { label: COMMAND_LABELS.swap, description: 'Convert to a string with every character case reversed', func: changeCase.swap },
     { label: COMMAND_LABELS.title, description: 'Convert to a space separated string with the first character of every word upper cased', func: changeCase.title },
     { label: COMMAND_LABELS.upper, description: 'Convert to a string in upper case', func: changeCase.upper },
-    { label: COMMAND_LABELS.upperFirst, description: 'Convert to a string with the first character upper cased', func: changeCase.ucFirst }
+    { label: COMMAND_LABELS.upperFirst, description: 'Convert to a string with the first character upper cased', func: changeCase.ucFirst },
+    // New commands from fork
+    { label: COMMAND_LABELS.toggleCase, description: 'Toggle between configured cases', func: toggleCase },
 ];
 
-export function changeCaseCommands() {
+// New commands from fork
+const EFFECT_COMMAND_DEFS = [
+    { label: COMMAND_LABELS.copyToggled, description: 'Copy toggled between configured cases', func: copyToggled }
+];
+
+export function toggleCaseCommands() {
     const firstSelectedText = getSelectedTextIfOnlyOneSelection();
     const opts: vscode.QuickPickOptions = { matchOnDescription: true, placeHolder: 'What do you want to do to the current word / selection(s)?' };
 
     // if there's only one selection, show a preview of what it will look like after conversion in the QuickPickOptions,
-    // otherwise use the description used in COMMAND_DEFINITIONS
-    const items: vscode.QuickPickItem[] = COMMAND_DEFINITIONS.map(c => ({
+    // otherwise use the description used in TRANSFORM_COMMAND_DEFS
+    const items: vscode.QuickPickItem[] = TRANSFORM_COMMAND_DEFS.map(c => ({
         label: c.label,
         description: firstSelectedText ? `Convert to ${c.func(firstSelectedText)}` : c.description
-    }));
+    }))
+        .concat(EFFECT_COMMAND_DEFS);
 
     vscode.window.showQuickPick(items)
         .then(command => runCommand(command.label));
 }
 
 export function runCommand(commandLabel: string) {
-    const commandDefinition = COMMAND_DEFINITIONS.filter(c => c.label === commandLabel)[0];
+    const commandDefinition = TRANSFORM_COMMAND_DEFS.filter(c => c.label === commandLabel)[0];
     if (!commandDefinition) return;
 
     const editor = vscode.window.activeTextEditor;
@@ -127,6 +191,28 @@ export function runCommand(commandLabel: string) {
     });
 }
 
+function isValidCase(str: string): boolean {
+    if (!str) return false;
+    const validCases = [
+        "camel",
+        "constant",
+        "dot",
+        "kebab",
+        "lower",
+        "lowerFirst",
+        "no",
+        "param",
+        "pascal",
+        "path",
+        "sentence",
+        "snake",
+        "title",
+        "upper",
+        "upperFirst"
+    ];
+    return validCases.indexOf(str) > -1;
+}
+
 function getSelectedTextIfOnlyOneSelection(): string {
     const editor = vscode.window.activeTextEditor;
     const { document, selection, selections } = editor;
@@ -141,7 +227,7 @@ function getSelectedText(selection: vscode.Selection, document: vscode.TextDocum
     let range: vscode.Range;
 
     if (isRangeSimplyCursorPosition(selection)) {
-        range = getChangeCaseWordRangeAtPosition(document, selection.end);
+        range = getToggleCaseWordRangeAtPosition(document, selection.end);
     } else {
         range = new vscode.Range(selection.start, selection.end);
     }
@@ -156,8 +242,8 @@ const CHANGE_CASE_WORD_CHARACTER_REGEX = /([\w_\.\-\/$]+)/;
 const CHANGE_CASE_WORD_CHARACTER_REGEX_WITHOUT_DOT = /([\w_\-\/$]+)/;
 
 // Change Case has a special definition of a word: it can contain special characters like dots, dashes and slashes
-function getChangeCaseWordRangeAtPosition(document: vscode.TextDocument, position: vscode.Position) {
-    const configuration = vscode.workspace.getConfiguration('changeCase')
+function getToggleCaseWordRangeAtPosition(document: vscode.TextDocument, position: vscode.Position) {
+    const configuration = vscode.workspace.getConfiguration('toggleCase')
     const includeDotInCurrentWord = configuration ? configuration.get('includeDotInCurrentWord', false) : false;
     const regex = includeDotInCurrentWord
         ? CHANGE_CASE_WORD_CHARACTER_REGEX
