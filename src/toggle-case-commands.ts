@@ -3,6 +3,13 @@ import { EOL } from 'os';
 import * as changeCase from 'change-case';
 const lodashUniq = require('lodash.uniq');
 
+type ToggleConfiguration = {
+    case1: string,
+    case2: string
+}
+
+type StringProcessor = (input: string) => string
+
 export const COMMAND_LABELS = {
     camel: 'camel',
     constant: 'constant',
@@ -33,7 +40,7 @@ const notifyOrThrow = (message: string, doThrow = false): void => {
 }
 
 const toggleCase = (input: string, throwWhenInvalid = false): string | undefined => {
-    const { case1, case2 } = vscode.workspace.getConfiguration('togglecase') || { case1: '', case2: '' }
+    const { case1, case2 } = <ToggleConfiguration>(vscode.workspace.getConfiguration('togglecase') || { case1: '', case2: '' })
     const notify = (message) => notifyOrThrow(message, throwWhenInvalid)
 
     let method;
@@ -113,7 +120,7 @@ export function toggleCaseCommands() {
     // otherwise use the description used in TRANSFORM_COMMAND_DEFS
     const items: vscode.QuickPickItem[] = TRANSFORM_COMMAND_DEFS.map(c => ({
         label: c.label,
-        description: firstSelectedText ? `Convert to ${c.func(firstSelectedText)}` : c.description
+        description: firstSelectedText ? `Convert to ${(<StringProcessor>c.func)(firstSelectedText)}` : c.description
     }))
         .concat(EFFECT_COMMAND_DEFS);
 
@@ -138,7 +145,7 @@ export function runCommand(commandLabel: string) {
             let offset;
 
             if (selection.isSingleLine) {
-                replacement = commandDefinition.func(text);
+                replacement = (<StringProcessor>commandDefinition.func)(text);
 
                 // it's possible that the replacement string is shorter or longer than the original,
                 // so calculate the offsets and new selection coordinates appropriately
@@ -146,7 +153,7 @@ export function runCommand(commandLabel: string) {
             } else {
                 const lines = document.getText(range).split(EOL);
 
-                const replacementLines = lines.map(x => commandDefinition.func(x));
+                const replacementLines = lines.map(x => (<StringProcessor>commandDefinition.func)(x));
                 replacement = replacementLines.reduce((acc, v) => (!acc ? '' : acc + EOL) + v, undefined);
                 offset = replacementLines[replacementLines.length - 1].length - lines[lines.length - 1].length;
             }
