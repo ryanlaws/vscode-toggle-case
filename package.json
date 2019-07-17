@@ -122,28 +122,29 @@
                 "command": "extension.toggleCase.copyToggled",
                 "title": "Copy with Case Toggled between configured cases"
             }
-        ]
-    },
-    "configuration": {
-        "type": "object",
-        "title": "toggleCase configuration",
-        "properties": {
-            "toggleCase.includeDotInCurrentWord": {
-                "type": "boolean",
-                "default": "false",
-                "description": "When selecting current word, allow dots in current word (false by default)"
-            },
-            "toggleCase.case1": {
-                "type": "string",
-                "default": "kebab",
-                "description": "First case to toggle to/from (from/to second)"
-            },
-            "toggleCase.case2": {
-                "type": "string",
-                "default": "camel",
-                "description": "Second case to toggle to/from (from/to first)"
+        ],
+        "configuration": [
+            {
+                "title": "toggleCase configuration",
+                "properties": {
+                    "toggleCase.includeDotInCurrentWord": {
+                        "type": "boolean",
+                        "default": "false",
+                        "description": "When selecting current word, allow dots in current word (false by default)"
+                    },
+                    "toggleCase.case1": {
+                        "type": "string",
+                        "default": "kebab",
+                        "description": "First case to toggle to/from (from/to second)"
+                    },
+                    "toggleCase.case2": {
+                        "type": "string",
+                        "default": "camel",
+                        "description": "Second case to toggle to/from (from/to first)"
+                    }
+                }
             }
-        }
+        ]
     },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",

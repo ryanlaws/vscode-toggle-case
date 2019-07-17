@@ -40,7 +40,7 @@ const notifyOrThrow = (message: string, doThrow = false): void => {
 }
 
 const toggleCase = (input: string, throwWhenInvalid = false): string | undefined => {
-    const { case1, case2 } = <ToggleConfiguration>(vscode.workspace.getConfiguration('togglecase') || { case1: '', case2: '' })
+    const { case1, case2 } = <ToggleConfiguration>(vscode.workspace.getConfiguration('toggleCase') || { case1: '', case2: '' })
     const notify = (message) => notifyOrThrow(message, throwWhenInvalid)
 
     let method;
